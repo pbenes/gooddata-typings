@@ -266,4 +266,23 @@ export namespace VisualizationObject {
     export function isAttribute(bucketItem: BucketItem): bucketItem is IVisualizationAttribute {
         return !isEmpty(bucketItem) && (bucketItem as IVisualizationAttribute).visualizationAttribute !== undefined;
     }
+
+    export function isLocalIdentifierQualifier(
+        objectQualifier: IObjUriQualifier | ILocalIdentifierQualifier
+    ): objectQualifier is ILocalIdentifierQualifier {
+        return (
+            !isEmpty(objectQualifier) &&
+            (objectQualifier as ILocalIdentifierQualifier).localIdentifier !== undefined
+        );
+    }
+
+    export function isComparisonCondition(
+        condition: MeasureValueFilterCondition
+    ): condition is IComparisonCondition {
+        return !isEmpty(condition) && (condition as IComparisonCondition).comparison !== undefined;
+    }
+
+    export function isRangeCondition(condition: MeasureValueFilterCondition): condition is IRangeCondition {
+        return !isEmpty(condition) && (condition as IRangeCondition).range !== undefined;
+    }
 }
