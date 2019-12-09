@@ -9,6 +9,9 @@ import VisualizationObjectDateFilter = VisualizationObject.VisualizationObjectDa
 import VisualizationObjectFilter = VisualizationObject.VisualizationObjectFilter;
 import IMeasureDefinitionType = VisualizationObject.IMeasureDefinitionType;
 import IArithmeticMeasureDefinition = VisualizationObject.IArithmeticMeasureDefinition;
+import IObjUriQualifier = VisualizationObject.IObjUriQualifier;
+import ILocalIdentifierQualifier = VisualizationObject.ILocalIdentifierQualifier;
+import MeasureValueFilterCondition = VisualizationObject.MeasureValueFilterCondition;
 
 describe('VisualizationObject', () => {
     describe('isMeasure', () => {
@@ -600,6 +603,104 @@ describe('VisualizationObject', () => {
             };
             const result = VisualizationObject.isMeasureValueFilter(filter);
             expect(result).toEqual(false);
+        });
+    });
+
+    describe('isLocalIdentifierQualifier', () => {
+        it('should return false when null is tested', () => {
+            const result = VisualizationObject.isLocalIdentifierQualifier(null);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when undefined is tested', () => {
+            const result = VisualizationObject.isLocalIdentifierQualifier(undefined);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when object uri qualifier is tested', () => {
+            const objUriQualifier: IObjUriQualifier = {
+                uri: '/gdc/mock/measure'
+            };
+            const result = VisualizationObject.isLocalIdentifierQualifier(objUriQualifier);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when object local qualifier is tested', () => {
+            const localIdentifierQualifier: ILocalIdentifierQualifier = {
+                localIdentifier: 'localId'
+            };
+            const result = VisualizationObject.isLocalIdentifierQualifier(localIdentifierQualifier);
+            expect(result).toEqual(true);
+        });
+    });
+
+    describe('isComparisonCondition', () => {
+        it('should return false when null is tested', () => {
+            const result = VisualizationObject.isComparisonCondition(null);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when undefined is tested', () => {
+            const result = VisualizationObject.isComparisonCondition(undefined);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when a range condition is tested', () => {
+            const rangeCondition: MeasureValueFilterCondition = {
+                range: {
+                    operator: 'BETWEEN',
+                    from: 10,
+                    to: 100
+                }
+            };
+            const result = VisualizationObject.isComparisonCondition(rangeCondition);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when a comparison condition is tested', () => {
+            const comparisonCondition: MeasureValueFilterCondition = {
+                comparison: {
+                    operator: 'EQUAL_TO',
+                    value: 100
+                }
+            };
+            const result = VisualizationObject.isComparisonCondition(comparisonCondition);
+            expect(result).toEqual(true);
+        });
+    });
+
+    describe('isRangeCondition', () => {
+        it('should return false when null is tested', () => {
+            const result = VisualizationObject.isRangeCondition(null);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when undefined is tested', () => {
+            const result = VisualizationObject.isRangeCondition(undefined);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when a comparison condition is tested', () => {
+            const comparisonCondition: MeasureValueFilterCondition = {
+                comparison: {
+                    operator: 'EQUAL_TO',
+                    value: 100
+                }
+            };
+            const result = VisualizationObject.isRangeCondition(comparisonCondition);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when a range condition is tested', () => {
+            const rangeCondition: MeasureValueFilterCondition = {
+                range: {
+                    operator: 'BETWEEN',
+                    from: 10,
+                    to: 100
+                }
+            };
+            const result = VisualizationObject.isRangeCondition(rangeCondition);
+            expect(result).toEqual(true);
         });
     });
 });
