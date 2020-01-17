@@ -1,4 +1,4 @@
-// (C) 2007-2019 GoodData Corporation
+// (C) 2007-2020 GoodData Corporation
 import { VisualizationObject } from '../VisualizationObject';
 import IMeasure = VisualizationObject.IMeasure;
 import IVisualizationAttribute = VisualizationObject.IVisualizationAttribute;
@@ -12,6 +12,7 @@ import IArithmeticMeasureDefinition = VisualizationObject.IArithmeticMeasureDefi
 import IObjUriQualifier = VisualizationObject.IObjUriQualifier;
 import ILocalIdentifierQualifier = VisualizationObject.ILocalIdentifierQualifier;
 import MeasureValueFilterCondition = VisualizationObject.MeasureValueFilterCondition;
+import isDateFilter = VisualizationObject.isDateFilter;
 
 describe('VisualizationObject', () => {
     describe('isMeasure', () => {
@@ -404,6 +405,41 @@ describe('VisualizationObject', () => {
             };
             const result = VisualizationObject.isAttributeFilter(filter);
             expect(result).toEqual(true);
+        });
+    });
+
+    describe('isDateFilter', () => {
+        it('should return true for a VisualizationObjectAbsoluteDateFilter', () => {
+            const absoluteDateFilter: VisualizationObject.IVisualizationObjectAbsoluteDateFilter = {
+                absoluteDateFilter: {
+                    dataSet: null
+                }
+            };
+
+            const result = isDateFilter(absoluteDateFilter);
+            expect(result).toEqual(true);
+        });
+        it('should return true for a VisualizationObjectRelativeDateFilter', () => {
+            const relativeDateFilter: VisualizationObject.IVisualizationObjectRelativeDateFilter = {
+                relativeDateFilter: {
+                    dataSet: null,
+                    granularity: ''
+                }
+            };
+
+            const result = isDateFilter(relativeDateFilter);
+            expect(result).toEqual(true);
+        });
+        it('should return false for a non VisualizationObjectDateFilter', () => {
+            const attributeFilter: VisualizationObject.VisualizationObjectAttributeFilter = {
+                positiveAttributeFilter: {
+                    displayForm: null,
+                    in: []
+                }
+            };
+
+            const result = isDateFilter(attributeFilter);
+            expect(result).toEqual(false);
         });
     });
 
