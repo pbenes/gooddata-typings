@@ -1,4 +1,4 @@
-// (C) 2007-2019 GoodData Corporation
+// (C) 2007-2020 GoodData Corporation
 import { IObjectMeta } from './Meta';
 import isEmpty = require('lodash/isEmpty');
 
@@ -234,6 +234,13 @@ export namespace VisualizationObject {
         return !isEmpty(filter) && (
             (filter as IVisualizationObjectPositiveAttributeFilter).positiveAttributeFilter !== undefined
             || (filter as IVisualizationObjectNegativeAttributeFilter).negativeAttributeFilter !== undefined
+        );
+    }
+
+    export function isDateFilter(filter: VisualizationObjectFilter): filter is VisualizationObjectDateFilter {
+        return !isEmpty(filter) && (
+            (filter as IVisualizationObjectAbsoluteDateFilter).absoluteDateFilter !== undefined
+            || (filter as IVisualizationObjectRelativeDateFilter).relativeDateFilter !== undefined
         );
     }
 
