@@ -1,10 +1,18 @@
-// (C) 2019 GoodData Corporation
+// (C) 2019-2020 GoodData Corporation
 import { ExtendedDateFilters } from './ExtendedDateFilters';
+import { IObjectMeta } from './Meta';
 
 export namespace DashboardExport {
     export type RelativeType = 'relative';
     export type AbsoluteType = 'absolute';
     export type DateFilterType = RelativeType | AbsoluteType;
+
+    export interface IFilterContext {
+        meta: IObjectMeta;
+        content: {
+            filters: FilterContextItem;
+        };
+    }
 
     export interface IAttributeFilter {
         attributeFilter: {

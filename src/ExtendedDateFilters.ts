@@ -1,4 +1,4 @@
-// (C) 2019 GoodData Corporation
+// (C) 2019-2020 GoodData Corporation
 import { IObjectMeta } from './Meta';
 
 export namespace ExtendedDateFilters {
@@ -50,8 +50,9 @@ export namespace ExtendedDateFilters {
         to: RelativeGranularityOffset;
     }
 
-    export interface IRelativeDateFilterPresetOfGranularity<Key extends DateFilterGranularity>
-        extends IRelativeDateFilterPreset {
+    export interface IRelativeDateFilterPresetOfGranularity<
+        Key extends DateFilterGranularity
+    > extends IRelativeDateFilterPreset {
         granularity: Key;
     }
 
@@ -77,39 +78,43 @@ export namespace ExtendedDateFilters {
         | IAbsoluteDateFilterForm
         | IAbsoluteDateFilterPreset;
 
-    export const isAllTimeDateFilter = (option: DateFilterOption): option is IAllTimeDateFilter =>
-        option
-            ? option.type === 'allTime'
-            : false;
+    export const isAllTimeDateFilter = (
+        option: DateFilterOption
+    ): option is IAllTimeDateFilter =>
+        option ? option.type === 'allTime' : false;
 
-    export const isAbsoluteDateFilterForm = (option: DateFilterOption): option is IAbsoluteDateFilterForm =>
-        option
-            ? option.type === 'absoluteForm'
-            : false;
+    export const isAbsoluteDateFilterForm = (
+        option: DateFilterOption
+    ): option is IAbsoluteDateFilterForm =>
+        option ? option.type === 'absoluteForm' : false;
 
-    export const isAbsoluteDateFilterPreset = (option: DateFilterOption): option is IAbsoluteDateFilterPreset =>
-        option
-            ? option.type === 'absolutePreset'
-            : false;
+    export const isAbsoluteDateFilterPreset = (
+        option: DateFilterOption
+    ): option is IAbsoluteDateFilterPreset =>
+        option ? option.type === 'absolutePreset' : false;
 
-    export const isAbsoluteDateFilterOption = (option: DateFilterOption): option is AbsoluteDateFilterOption =>
+    export const isAbsoluteDateFilterOption = (
+        option: DateFilterOption
+    ): option is AbsoluteDateFilterOption =>
         isAbsoluteDateFilterForm(option) || isAbsoluteDateFilterPreset(option);
 
     export type RelativeDateFilterOption =
         | IRelativeDateFilterForm
         | IRelativeDateFilterPreset;
 
-    export const isRelativeDateFilterForm = (option: DateFilterOption): option is IRelativeDateFilterForm =>
-        option
-            ? option.type === 'relativeForm'
-            : false;
+    export const isRelativeDateFilterForm = (
+        option: DateFilterOption
+    ): option is IRelativeDateFilterForm =>
+        option ? option.type === 'relativeForm' : false;
 
-    export const isRelativeDateFilterPreset = (option: DateFilterOption): option is IRelativeDateFilterPreset =>
-        option
-            ? option.type === 'relativePreset'
-            : false;
+    export const isRelativeDateFilterPreset = (
+        option: DateFilterOption
+    ): option is IRelativeDateFilterPreset =>
+        option ? option.type === 'relativePreset' : false;
 
-    export const isRelativeDateFilterOption = (option: DateFilterOption): option is RelativeDateFilterOption =>
+    export const isRelativeDateFilterOption = (
+        option: DateFilterOption
+    ): option is RelativeDateFilterOption =>
         isRelativeDateFilterForm(option) || isRelativeDateFilterPreset(option);
 
     export type DateFilterOption =
@@ -119,7 +124,9 @@ export namespace ExtendedDateFilters {
 
     export type DateFilterRelativeOptionGroup = {
         // tslint:disable-next-line:array-type
-        [key in DateFilterGranularity]?: IRelativeDateFilterPresetOfGranularity<key>[]
+        [key in DateFilterGranularity]?: IRelativeDateFilterPresetOfGranularity<
+            key
+        >[];
     };
 
     export interface IDateFilterOptionsByType {
@@ -189,7 +196,10 @@ export namespace ExtendedDateFilters {
         content: IDateFilterConfigContent;
     }
 
-    export type DashboardDateFilterConfigMode = 'readonly' | 'hidden' | 'active';
+    export type DashboardDateFilterConfigMode =
+        | 'readonly'
+        | 'hidden'
+        | 'active';
 
     export interface IDashboardAddedPresets {
         absolutePresets?: IDateFilterAbsolutePreset[];
@@ -202,5 +212,17 @@ export namespace ExtendedDateFilters {
         hideOptions?: GUID[];
         hideGranularities?: DateFilterGranularity[];
         addPresets?: IDashboardAddedPresets;
+    }
+
+    export interface IDateFilterReference {
+        dateFilterReference: {
+            dataSet: string;
+        };
+    }
+
+    export interface IAttributeFilterReference {
+        attributeFilterReference: {
+            displayForm: string;
+        };
     }
 }
