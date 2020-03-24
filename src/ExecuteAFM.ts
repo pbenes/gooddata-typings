@@ -1,5 +1,6 @@
 // (C) 2019 GoodData Corporation
 import isEmpty = require('lodash/isEmpty');
+import isArray = require('lodash/isArray');
 
 /**
  * Types defined here exactly match types accepted by the executeAfm resource.
@@ -384,6 +385,6 @@ export namespace ExecuteAFM {
         attributeElements: ExecuteAFM.AttributeElements
     ): attributeElements is ExecuteAFM.IAttributeElementsByValue {
         return !isEmpty(attributeElements)
-            && (attributeElements as ExecuteAFM.IAttributeElementsByValue).values !== undefined;
+            && isArray((attributeElements as ExecuteAFM.IAttributeElementsByValue).values);
     }
 }

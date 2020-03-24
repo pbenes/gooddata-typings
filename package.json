@@ -64,9 +64,9 @@
     "@gooddata/tslint-config": "^1.0.0",
     "@types/jest": "^24.0.6",
     "@types/lodash": "^4.14.121",
-    "jest": "^24.7.1",
+    "jest": "25.1.0",
     "jest-junit": "^3.0.0",
-    "ts-jest": "^24.0.1",
+    "ts-jest": "25.2.1",
     "typescript": "^3.3.4000"
   },
   "dependencies": {

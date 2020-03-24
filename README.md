@@ -20,6 +20,13 @@ $ npm install --save-dev @gooddata/typings
 
 ## Develop
 
+Install [Node.js](http://nodejs.org) (node 12.16.1, npm v6.13.4) and [Yarn](https://classic.yarnpkg.com) 1.22.4.
+
+Install dependencies:
+```
+yarn install --frozen-lockfile
+```
+
 ### Running the development
 
 To develop, you need to run the typescript compiler. By running `yarn dev`, the typescript compiler will be run in watch mode.
@@ -34,7 +41,6 @@ To run tests (including watch mode), use `yarn test`.
 ```sh
 $ yarn test
 ```
-
 
 ### Deployment
 
