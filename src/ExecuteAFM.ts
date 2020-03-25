@@ -1,4 +1,4 @@
-// (C) 2019 GoodData Corporation
+// (C) 2020 GoodData Corporation
 import isEmpty = require('lodash/isEmpty');
 import isArray = require('lodash/isArray');
 
@@ -164,6 +164,7 @@ export namespace ExecuteAFM {
         comparison: {
             operator: ComparisonConditionOperator
             value: number;
+            treatNullValuesAs?: number;
         };
     }
 
@@ -174,6 +175,7 @@ export namespace ExecuteAFM {
             operator: RangeConditionOperator;
             from: number;
             to: number;
+            treatNullValuesAs?: number;
         };
     }
 
