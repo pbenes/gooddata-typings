@@ -73,6 +73,7 @@ export namespace VisualizationObject {
         comparison: {
             operator: ComparisonConditionOperator
             value: number;
+            treatNullValuesAs?: number;
         };
     }
 
@@ -83,6 +84,7 @@ export namespace VisualizationObject {
             operator: RangeConditionOperator;
             from: number;
             to: number;
+            treatNullValuesAs?: number;
         };
     }
 
