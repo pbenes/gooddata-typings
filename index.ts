@@ -13,3 +13,5 @@ export * from './src/DashboardExport';
 export * from './src/KPI';
 export * from './src/visualizationWidget';
 export * from './src/AnalyticalDashboard';
+export * from './src/embedding/common';
+export * from './src/embedding/ad';
