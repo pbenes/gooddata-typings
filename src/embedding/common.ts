@@ -12,7 +12,7 @@ export enum GdcProductName {
     /**
      * KD product name
      */
-    KPI_DASHBOARDS = 'dashboards'
+    KPI_DASHBOARD = 'dashboard'
 }
 
 /**
@@ -188,4 +188,32 @@ export interface IPostMessageContextPayload {
 export function getEventType(obj: any): string {
     const { gdc: { event: { name = '' } = {} } = {} } = obj || {};
     return name;
+}
+
+//
+// Drillable Items command
+//
+
+/**
+ * Base type of drillable items command body
+ */
+export interface ISimpleDrillableItemsCommandBody {
+    /**
+     * The array of uris of attributes or measures
+     */
+    uris?: string[];
+    /**
+     * The array of identifiers of attributes or measures
+     */
+    identifiers?: string[];
+}
+
+/**
+ * The main data type of drillable items command
+ */
+export interface IDrillableItemsCommandBody extends ISimpleDrillableItemsCommandBody {
+    /**
+     * Master measures items - In-case, a derived measure is composed from a master measure.
+     */
+    composedFrom?: ISimpleDrillableItemsCommandBody;
 }

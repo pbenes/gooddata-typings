@@ -7,7 +7,8 @@ import {
     CommandFailedData,
     isCommandFailedData,
     GdcProductName,
-    getEventType
+    getEventType,
+    IDrillableItemsCommandBody
 } from './common';
 import { IBaseExportConfig } from '../Export';
 import { VisualizationObject } from '../VisualizationObject';
@@ -160,34 +161,6 @@ export namespace EmbeddedAnalyticalDesigner {
      */
     export function isAdCommandFailedData(obj: any): obj is AdCommandFailedData {
         return isCommandFailedData<GdcProductName.ANALYTICAL_DESIGNER>(obj);
-    }
-
-    //
-    // Drillable Items command
-    //
-
-    /**
-     * Base type of drillable items command body
-     */
-    export interface ISimpleDrillableItemsCommandBody {
-        /**
-         * The array of uris of attributes or measures
-         */
-        uris?: string[];
-        /**
-         * The array of identifiers of attributes or measures
-         */
-        identifiers?: string[];
-    }
-
-    /**
-     * The main data type for furture processing of drillable items command
-     */
-    export interface IDrillableItemsCommandBody extends ISimpleDrillableItemsCommandBody {
-        /**
-         * Master measures items - In-case, a derived measure is composed from a master measure.
-         */
-        composedFrom?: ISimpleDrillableItemsCommandBody;
     }
 
     /**
