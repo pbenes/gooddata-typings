@@ -173,6 +173,15 @@ export interface IObjectMeta {
 }
 
 /**
+ * Addtional information for action payload. Use for internal reducers, sagas
+ */
+export interface IPostMessageContextPayload {
+    postMessageContext?: {
+        contextId: string;
+    };
+}
+
+/**
  * Get event type of event from event data
  * @param obj the event data object
  */
