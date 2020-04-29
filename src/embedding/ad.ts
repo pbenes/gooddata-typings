@@ -25,7 +25,7 @@ export namespace EmbeddedAnalyticalDesigner {
         /**
          * Include applied filters
          */
-        showFilters?: boolean;
+        includeFilterContext?: boolean;
     }
 
     /**
