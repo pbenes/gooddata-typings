@@ -127,7 +127,12 @@ export namespace EmbeddedAnalyticalDesigner {
         /**
          * Type represent that the export action is finished
          */
-        ExportFinished = 'exportInsightFinished'
+        ExportFinished = 'exportInsightFinished',
+
+        /**
+         * Type that drill performed
+         */
+        Drill = 'drill'
     }
 
     /**
