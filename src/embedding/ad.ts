@@ -107,6 +107,11 @@ export namespace EmbeddedAnalyticalDesigner {
         InsightOpened = 'insightOpened',
 
         /**
+         * Type represent that the insight editor is cleared
+         */
+        ClearFinished = 'clearFinished',
+
+        /**
          * Type represent that the insight is saved
          *
          * Note: use `visualizationSaved` because of backward compatibility
@@ -570,7 +575,7 @@ export namespace EmbeddedAnalyticalDesigner {
     >;
 
     /**
-     * Data type of event that was emit when the new insight initialized
+     * Data type of event that was emitted when the new insight initialized
      *
      * Note: it has empty content and just wrapped to application and product data structure
      */
@@ -609,7 +614,7 @@ export namespace EmbeddedAnalyticalDesigner {
     export type InsightOpened = IADMessageEvent<GdcAdEventType.InsightOpened, InsightOpenedBody>;
 
     /**
-     * Data type of event that was emit when an insight is opened
+     * Data type of event that was emitted when an insight is opened
      *
      * Note: The main event data was wrapped to application and product data structure
      * @see InsightOpenedBody
@@ -626,6 +631,35 @@ export namespace EmbeddedAnalyticalDesigner {
      */
     export function isInsightOpenedData(obj: any): obj is InsightOpenedData {
         return getEventType(obj) === GdcAdEventType.InsightOpened;
+    }
+
+    //
+    // clear finished
+    //
+
+    /**
+     * This event is emitted when AD successfully performs clear operation.
+     */
+    export type ClearFinished = IADMessageEvent<GdcAdEventType.ClearFinished, IAvailableCommands>;
+
+    /**
+     * Data type of event that was emitted after finish clear action
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     * @see UndoFinishedBody
+     */
+    export type ClearFinishedData = IAdGdcMessageEnvelope<
+        GdcAdEventType.ClearFinished,
+        IAvailableCommands
+    >;
+
+    /**
+     * Type-guard checking whether an object is an instance of {@link ClearFinishedData}
+     *
+     * @param obj - object to test
+     */
+    export function isClearFinishedData(obj: any): obj is ClearFinishedData {
+        return getEventType(obj) === GdcAdEventType.ClearFinished;
     }
 
     //
@@ -650,7 +684,7 @@ export namespace EmbeddedAnalyticalDesigner {
     export type InsightSaved = IADMessageEvent<GdcAdEventType.InsightSaved, InsightSavedBody>;
 
     /**
-     * Data type of event that was emit when an insight is saved
+     * Data type of event that was emitted when an insight is saved
      *
      * Note: The main event data was wrapped to application and product data structure
      * @see InsightSavedBody
@@ -692,7 +726,7 @@ export namespace EmbeddedAnalyticalDesigner {
     >;
 
     /**
-     * Data type of event that was emit after an insight was exported
+     * Data type of event that was emitted after an insight was exported
      *
      * Note: The main event data was wrapped to application and product data structure
      * @see ExportFinishedBody
@@ -726,7 +760,7 @@ export namespace EmbeddedAnalyticalDesigner {
     export type UndoFinished = IADMessageEvent<GdcAdEventType.UndoFinished, UndoFinishedBody>;
 
     /**
-     * Data type of event that was emit after finish undo action
+     * Data type of event that was emitted after finish undo action
      *
      * Note: The main event data was wrapped to application and product data structure
      * @see UndoFinishedBody
@@ -760,7 +794,7 @@ export namespace EmbeddedAnalyticalDesigner {
     export type RedoFinished = IADMessageEvent<GdcAdEventType.RedoFinished, RedoFinishedBody>;
 
     /**
-     * Data type of event that was emit after finish redo action
+     * Data type of event that was emitted after finish redo action
      *
      * Note: The main event data was wrapped to application and product data structure
      * @see RedoFinishedBody
