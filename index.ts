@@ -15,3 +15,4 @@ export * from './src/visualizationWidget';
 export * from './src/AnalyticalDashboard';
 export * from './src/embedding/common';
 export * from './src/embedding/ad';
+export * from './src/embedding/kd';
