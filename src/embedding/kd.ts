@@ -11,12 +11,12 @@ export namespace EmbeddedKpiDashboard {
     /**
      * Base type for KD events.
      */
-    export type IKdGdcMessageEvent<T, TBody> = IGdcMessageEvent<GdcProductName.KPI_DASHBOARD, T, TBody>;
+    export type IGdcKdMessageEvent<T, TBody> = IGdcMessageEvent<GdcProductName.KPI_DASHBOARD, T, TBody>;
 
     /**
      * Base type for KD event data.
      */
-    export type IKdGdcMessageEnvelope<T, TBody> = IGdcMessageEnvelope<GdcProductName.KPI_DASHBOARD, T, TBody>;
+    export type IGdcKdMessageEnvelope<T, TBody> = IGdcMessageEnvelope<GdcProductName.KPI_DASHBOARD, T, TBody>;
 
     /**
      * All KD command Types.
@@ -169,9 +169,9 @@ export namespace EmbeddedKpiDashboard {
      *
      * @remarks use {@link SaveDashboardCommand} factory function to instantiate
      */
-    export type SaveDashboardCommand = IKdGdcMessageEvent<GdcKdCommandType.Save, IKdSaveCommandBody>;
+    export type SaveDashboardCommand = IGdcKdMessageEvent<GdcKdCommandType.Save, IKdSaveCommandBody>;
 
-    export type SaveDashboardCommandData = IKdGdcMessageEnvelope<GdcKdCommandType.Save, IKdSaveCommandBody>;
+    export type SaveDashboardCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.Save, IKdSaveCommandBody>;
 
     /**
      * Type-guard checking whether object is an instance of {@link SaveDashboardCommandData}.
@@ -194,9 +194,9 @@ export namespace EmbeddedKpiDashboard {
      *
      * @remarks use {@link CancelEditCommand} factory function to instantiate
      */
-    export type CancelEditCommand = IKdGdcMessageEvent<GdcKdCommandType.CancelEdit, null>;
+    export type CancelEditCommand = IGdcKdMessageEvent<GdcKdCommandType.CancelEdit, null>;
 
-    export type CancelEditCommandData = IKdGdcMessageEnvelope<GdcKdCommandType.CancelEdit, null>;
+    export type CancelEditCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.CancelEdit, null>;
 
     /**
      * Type-guard checking whether object is an instance of {@link CancelEditData}.
@@ -220,9 +220,9 @@ export namespace EmbeddedKpiDashboard {
      *
      * @remarks use {@link DeleteDashboardCommand} factory function to instantiate
      */
-    export type DeleteDashboardCommand = IKdGdcMessageEvent<GdcKdCommandType.Delete, null>;
+    export type DeleteDashboardCommand = IGdcKdMessageEvent<GdcKdCommandType.Delete, null>;
 
-    export type DeleteDashboardCommandData = IKdGdcMessageEnvelope<
+    export type DeleteDashboardCommandData = IGdcKdMessageEnvelope<
         GdcKdCommandType.Delete,
         null
     >;
@@ -240,9 +240,9 @@ export namespace EmbeddedKpiDashboard {
      *
      * @remarks use {@link SwitchToEditCommand} factory function to instantiate
      */
-    export type SwitchToEditCommand = IKdGdcMessageEvent<GdcKdCommandType.SwitchToEdit, null>;
+    export type SwitchToEditCommand = IGdcKdMessageEvent<GdcKdCommandType.SwitchToEdit, null>;
 
-    export type SwitchToEditCommandData = IKdGdcMessageEnvelope<
+    export type SwitchToEditCommandData = IGdcKdMessageEnvelope<
         GdcKdCommandType.SwitchToEdit,
         null
     >;
@@ -263,7 +263,7 @@ export namespace EmbeddedKpiDashboard {
      *
      * - Drillable items can be set by uris or identifiers of dashboard's measures/attributes
      */
-    export type DrillableItemsCommand = IKdGdcMessageEvent<
+    export type DrillableItemsCommand = IGdcKdMessageEvent<
         GdcKdCommandType.DrillableItems,
         IDrillableItemsCommandBody
     >;
@@ -274,7 +274,7 @@ export namespace EmbeddedKpiDashboard {
      * Note: The main event data was wrapped to application and product data structure
      * @see IDrillableItemsCommandBody
      */
-    export type DrillableItemsCommandData = IKdGdcMessageEnvelope<
+    export type DrillableItemsCommandData = IGdcKdMessageEnvelope<
         GdcKdCommandType.DrillableItems,
         IDrillableItemsCommandBody
     >;
@@ -295,9 +295,9 @@ export namespace EmbeddedKpiDashboard {
         heigth: number;
     }
 
-    export type SetSizeCommand = IKdGdcMessageEvent<GdcKdCommandType.SetSize, ISetSizeCommandBody>;
+    export type SetSizeCommand = IGdcKdMessageEvent<GdcKdCommandType.SetSize, ISetSizeCommandBody>;
 
-    export type SetSizeCommandData = IKdGdcMessageEnvelope<GdcKdCommandType.SetSize, ISetSizeCommandBody>;
+    export type SetSizeCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.SetSize, ISetSizeCommandBody>;
 
     /**
      * Type-guard checking whether object is an instance of {@link SetSizeCommandData}.
@@ -318,7 +318,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * This event is emitted When User does not have permissions to view or edit the content
      */
-    export type NoPermissionsEventData = IKdGdcMessageEnvelope<
+    export type NoPermissionsEventData = IGdcKdMessageEnvelope<
         GdcKdEventType.NoPermissions,
         INoPermissionsBody
     >;
@@ -330,7 +330,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * This event is emitted when the content is fully loaded
      */
-    export type ResizedEventData = IKdGdcMessageEnvelope<
+    export type ResizedEventData = IGdcKdMessageEnvelope<
         GdcKdEventType.Resized,
         IResizedBody
     >;
@@ -367,7 +367,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * Data type of event that was emited when a dashboard has been created and saved.
      */
-    export type IDashboardCreatedData = IKdGdcMessageEnvelope<
+    export type IDashboardCreatedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardCreated,
         IDashboardBody
     >;
@@ -376,7 +376,7 @@ export namespace EmbeddedKpiDashboard {
      * Data type of event that was emited when the content is fully loaded,
      * and the user has permissions to access the dashboard.
      */
-    export type IDashboardLoadedData = IKdGdcMessageEnvelope<
+    export type IDashboardLoadedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardLoaded,
         IDashboardBody
     >;
@@ -384,7 +384,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * Data type of event that was emited when the existing dashboard has been updated.
      */
-    export type IDashboardUpdatedData = IKdGdcMessageEnvelope<
+    export type IDashboardUpdatedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardUpdated,
         IDashboardBody
     >;
@@ -392,7 +392,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * Data type of event that was emited when the dashboard has been saved.
      */
-    export type IDashboardSavedData = IKdGdcMessageEnvelope<
+    export type IDashboardSavedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardSaved,
         IDashboardBody
     >;
@@ -400,7 +400,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * Data type of event that was emited when the dashboard has been deleted.
      */
-    export type IDashboardDeletedData = IKdGdcMessageEnvelope<
+    export type IDashboardDeletedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardDeleted,
         IDashboardBody
     >;
@@ -408,7 +408,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * This event is emitted after KD switched a dashboard from view mode to edit mode.
      */
-    export type SwitchedToEditData = IKdGdcMessageEnvelope<
+    export type SwitchedToEditData = IGdcKdMessageEnvelope<
         GdcKdEventType.SwitchedToEdit,
         IDashboardBody
     >;
@@ -416,7 +416,7 @@ export namespace EmbeddedKpiDashboard {
     /**
      * This event is emitted after KD switched a dashboard from edit mode to view mode.
      */
-    export type SwitchedToViewData = IKdGdcMessageEnvelope<
+    export type SwitchedToViewData = IGdcKdMessageEnvelope<
         GdcKdEventType.SwitchedToView,
         IDashboardBody
     >;
@@ -427,5 +427,5 @@ export namespace EmbeddedKpiDashboard {
         description?: string;
     }
 
-    export type PlaformData = IKdGdcMessageEnvelope<GdcKdEventType.Platform, IPlaformBody>;
+    export type PlaformData = IGdcKdMessageEnvelope<GdcKdEventType.Platform, IPlaformBody>;
 }

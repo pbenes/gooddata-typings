@@ -32,12 +32,12 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * Base type for AD events
      */
-    export type IADMessageEvent<T, TBody> = IGdcMessageEvent<GdcProductName.ANALYTICAL_DESIGNER, T, TBody>;
+    export type IGdcAdMessageEvent<T, TBody> = IGdcMessageEvent<GdcProductName.ANALYTICAL_DESIGNER, T, TBody>;
 
     /**
      * Base type for AD event data
      */
-    export type IAdGdcMessageEnvelope<T, TBody> = IGdcMessageEnvelope<
+    export type IGdcAdMessageEnvelope<T, TBody> = IGdcMessageEnvelope<
         GdcProductName.ANALYTICAL_DESIGNER,
         T,
         TBody
@@ -170,7 +170,7 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * - Drillable items can be set by uris or identifiers of insight's measures/attributes
      */
-    export type DrillableItemsCommand = IADMessageEvent<GdcAdCommandType.DrillableItems, IDrillableItemsCommandBody>;
+    export type DrillableItemsCommand = IGdcAdMessageEvent<GdcAdCommandType.DrillableItems, IDrillableItemsCommandBody>;
 
     /**
      * Data type of drillable items command
@@ -178,7 +178,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see IDrillableItemsCommandBody
      */
-    export type DrillableItemsCommandData = IAdGdcMessageEnvelope<
+    export type DrillableItemsCommandData = IGdcAdMessageEnvelope<
         GdcAdCommandType.DrillableItems,
         IDrillableItemsCommandBody
     >;
@@ -260,7 +260,7 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * Note: if insightId isn't provided, the empty insight editor will be opened
      */
-    export type OpenInsightCommand = IADMessageEvent<GdcAdCommandType.OpenInsight, IOpenInsightCommandBody>;
+    export type OpenInsightCommand = IGdcAdMessageEvent<GdcAdCommandType.OpenInsight, IOpenInsightCommandBody>;
 
     /**
      * Data type of open insight command
@@ -268,7 +268,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see IOpenInsightCommandBody
      */
-    export type OpenInsightCommandData = IAdGdcMessageEnvelope<
+    export type OpenInsightCommandData = IGdcAdMessageEnvelope<
         GdcAdCommandType.OpenInsight,
         IOpenInsightCommandBody
     >;
@@ -289,14 +289,14 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * Triggers the clear action to reset the insight editor to empty state
      */
-    export type ClearCommand = IADMessageEvent<GdcAdCommandType.Clear, undefined>;
+    export type ClearCommand = IGdcAdMessageEvent<GdcAdCommandType.Clear, undefined>;
 
     /**
      * Data type of clear command
      *
      * Note: it has empty content and just wrapped to application and product data structure
      */
-    export type ClearCommandData = IAdGdcMessageEnvelope<GdcAdCommandType.Clear, undefined>;
+    export type ClearCommandData = IGdcAdMessageEnvelope<GdcAdCommandType.Clear, undefined>;
 
     /**
      * Type-guard checking whether an object is an instance of {@link ClearCommandData}
@@ -337,7 +337,7 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * Note: sending SaveInsightCommand with different title means insight will be saved with that new title.
      */
-    export type SaveInsightCommand = IADMessageEvent<GdcAdCommandType.Save, ISaveCommandBody>;
+    export type SaveInsightCommand = IGdcAdMessageEvent<GdcAdCommandType.Save, ISaveCommandBody>;
 
     /**
      * Data type of save insight command
@@ -345,7 +345,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see ISaveCommandBody
      */
-    export type SaveInsightCommandData = IAdGdcMessageEnvelope<
+    export type SaveInsightCommandData = IGdcAdMessageEnvelope<
         GdcAdCommandType.Save,
         ISaveCommandBody
     >;
@@ -378,7 +378,7 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * Contract is same as {@link SaveInsightCommand}.
      */
-    export type SaveAsInsightCommand = IADMessageEvent<GdcAdCommandType.SaveAs, ISaveAsInsightCommandBody>;
+    export type SaveAsInsightCommand = IGdcAdMessageEvent<GdcAdCommandType.SaveAs, ISaveAsInsightCommandBody>;
 
     /**
      * Data type of save as insight command
@@ -386,7 +386,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see ISaveAsInsightCommandBody
      */
-    export type SaveAsInsightCommandData = IAdGdcMessageEnvelope<
+    export type SaveAsInsightCommandData = IGdcAdMessageEnvelope<
         GdcAdCommandType.SaveAs,
         ISaveAsInsightCommandBody
     >;
@@ -430,7 +430,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * -  if the specified export config is invalid / does not match validation rules, then CommandFailed event
      *    will be posted
      */
-    export type ExportInsightCommand = IADMessageEvent<GdcAdCommandType.Export, IExportInsightCommandBody>;
+    export type ExportInsightCommand = IGdcAdMessageEvent<GdcAdCommandType.Export, IExportInsightCommandBody>;
 
     /**
      * Data type of export insight command
@@ -438,7 +438,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see IExportInsightCommandBody
      */
-    export type ExportInsightCommandData = IAdGdcMessageEnvelope<
+    export type ExportInsightCommandData = IGdcAdMessageEnvelope<
         GdcAdCommandType.Export,
         IExportInsightCommandBody
     >;
@@ -466,14 +466,14 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * -  if the Undo operation is not available in current state of AD, then CommandFailed will be posted
      */
-    export type UndoCommand = IADMessageEvent<GdcAdCommandType.Undo, undefined>;
+    export type UndoCommand = IGdcAdMessageEvent<GdcAdCommandType.Undo, undefined>;
 
     /**
      * Data type of undo command
      *
      * Note: it has empty content and just wrapped to application and product data structure
      */
-    export type UndoCommandData = IAdGdcMessageEnvelope<GdcAdCommandType.Undo, undefined>;
+    export type UndoCommandData = IGdcAdMessageEnvelope<GdcAdCommandType.Undo, undefined>;
 
     /**
      * Type-guard checking whether an object is an instance of {@link UndoCommandData}
@@ -498,14 +498,14 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * -  if the Redo operation is not available in current state of AD, then CommandFailed will be posted
      */
-    export type RedoCommand = IADMessageEvent<GdcAdCommandType.Redo, undefined>;
+    export type RedoCommand = IGdcAdMessageEvent<GdcAdCommandType.Redo, undefined>;
 
     /**
      * Data type of redo command
      *
      * Note: it has empty content and just wrapped to application and product data structure
      */
-    export type RedoCommandData = IAdGdcMessageEnvelope<GdcAdCommandType.Redo, undefined>;
+    export type RedoCommandData = IGdcAdMessageEnvelope<GdcAdCommandType.Redo, undefined>;
 
     /**
      * Type-guard checking whether an object is an instance of {@link RedoCommandData}
@@ -542,7 +542,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * This event is emitted when AD initializes edit session for a new insight.
      */
-    export type NewInsightInitialized = IADMessageEvent<
+    export type NewInsightInitialized = IGdcAdMessageEvent<
         GdcAdEventType.NewInsightInitialized,
         NewInsightInitializedBody
     >;
@@ -552,7 +552,7 @@ export namespace EmbeddedAnalyticalDesigner {
      *
      * Note: it has empty content and just wrapped to application and product data structure
      */
-    export type NewInsightInitializedData = IAdGdcMessageEnvelope<
+    export type NewInsightInitializedData = IGdcAdMessageEnvelope<
         GdcAdEventType.NewInsightInitialized,
         undefined
     >;
@@ -584,7 +584,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * This event is emitted when AD initializes edit session for an existing insight. Essential detail about
      * the insight is included in the body.
      */
-    export type InsightOpened = IADMessageEvent<GdcAdEventType.InsightOpened, InsightOpenedBody>;
+    export type InsightOpened = IGdcAdMessageEvent<GdcAdEventType.InsightOpened, InsightOpenedBody>;
 
     /**
      * Data type of event that was emitted when an insight is opened
@@ -592,7 +592,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see InsightOpenedBody
      */
-    export type InsightOpenedData = IAdGdcMessageEnvelope<
+    export type InsightOpenedData = IGdcAdMessageEnvelope<
         GdcAdEventType.InsightOpened,
         InsightOpenedBody
     >;
@@ -613,7 +613,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * This event is emitted when AD successfully performs clear operation.
      */
-    export type ClearFinished = IADMessageEvent<GdcAdEventType.ClearFinished, IAvailableCommands>;
+    export type ClearFinished = IGdcAdMessageEvent<GdcAdEventType.ClearFinished, IAvailableCommands>;
 
     /**
      * Data type of event that was emitted after finish clear action
@@ -621,7 +621,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see UndoFinishedBody
      */
-    export type ClearFinishedData = IAdGdcMessageEnvelope<
+    export type ClearFinishedData = IGdcAdMessageEnvelope<
         GdcAdEventType.ClearFinished,
         IAvailableCommands
     >;
@@ -654,7 +654,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * This event is emitted when AD saves the currently edited insight.
      */
-    export type InsightSaved = IADMessageEvent<GdcAdEventType.InsightSaved, InsightSavedBody>;
+    export type InsightSaved = IGdcAdMessageEvent<GdcAdEventType.InsightSaved, InsightSavedBody>;
 
     /**
      * Data type of event that was emitted when an insight is saved
@@ -662,7 +662,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see InsightSavedBody
      */
-    export type InsightSavedData = IAdGdcMessageEnvelope<
+    export type InsightSavedData = IGdcAdMessageEnvelope<
         GdcAdEventType.InsightSaved,
         InsightSavedBody
     >;
@@ -693,7 +693,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * This event is emitted when AD successfully exports data visualized by the currently edited insight.
      */
-    export type ExportFinished = IADMessageEvent<
+    export type ExportFinished = IGdcAdMessageEvent<
         GdcAdEventType.ExportFinished,
         ExportFinishedBody
     >;
@@ -704,7 +704,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see ExportFinishedBody
      */
-    export type ExportFinishedData = IAdGdcMessageEnvelope<
+    export type ExportFinishedData = IGdcAdMessageEnvelope<
         GdcAdEventType.ExportFinished,
         ExportFinishedBody
     >;
@@ -730,7 +730,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * This event is emitted when AD successfully performs Undo operation.
      */
-    export type UndoFinished = IADMessageEvent<GdcAdEventType.UndoFinished, UndoFinishedBody>;
+    export type UndoFinished = IGdcAdMessageEvent<GdcAdEventType.UndoFinished, UndoFinishedBody>;
 
     /**
      * Data type of event that was emitted after finish undo action
@@ -738,7 +738,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see UndoFinishedBody
      */
-    export type UndoFinishedData = IAdGdcMessageEnvelope<
+    export type UndoFinishedData = IGdcAdMessageEnvelope<
         GdcAdEventType.UndoFinished,
         UndoFinishedBody
     >;
@@ -764,7 +764,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * This event is emitted when AD successfully performs Undo operation.
      */
-    export type RedoFinished = IADMessageEvent<GdcAdEventType.RedoFinished, RedoFinishedBody>;
+    export type RedoFinished = IGdcAdMessageEvent<GdcAdEventType.RedoFinished, RedoFinishedBody>;
 
     /**
      * Data type of event that was emitted after finish redo action
@@ -772,7 +772,7 @@ export namespace EmbeddedAnalyticalDesigner {
      * Note: The main event data was wrapped to application and product data structure
      * @see RedoFinishedBody
      */
-    export type RedoFinishedData = IAdGdcMessageEnvelope<
+    export type RedoFinishedData = IGdcAdMessageEnvelope<
         GdcAdEventType.RedoFinished,
         RedoFinishedBody
     >;
