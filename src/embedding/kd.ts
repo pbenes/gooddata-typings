@@ -53,9 +53,19 @@ export namespace EmbeddedKpiDashboard {
         SetSize = 'setSize',
 
         /**
-         * The command drill performed
+         * The command add widget to dashboard.
          */
-        Drill = 'drill'
+        AddWidget = 'addWidget',
+
+        /**
+         * The command add filter to dashboard.
+         */
+        AddFilter = 'addFilter',
+
+        /**
+         * The command export a dashboard.
+         */
+        ExportToPDF = 'exportToPDF'
     }
 
     /**
@@ -128,7 +138,29 @@ export namespace EmbeddedKpiDashboard {
         /**
          * Type represent that the platform is down.
          */
-        Platform = 'platform'
+        Platform = 'platform',
+
+        /**
+         * Type represent that the widget is added to dashboard.
+         *
+         */
+        WidgetAdded = 'widgetAdded',
+
+        /**
+         * Type represent that the filter is added to dashboard.
+         *
+         */
+        FilterAdded = 'filterAdded',
+
+        /**
+         * Type represent that the export action is finished.
+         */
+        ExportedToPDF = 'exportedToPDF',
+
+        /**
+         * Type represent that the drill performed
+         */
+        Drill = 'drill'
     }
 
     /**
@@ -166,8 +198,6 @@ export namespace EmbeddedKpiDashboard {
      *    otherwise be eligible for saving (not empty, not in-error)
      *
      * Note: sending Save command with different title means dashboard will be saved with that new title.
-     *
-     * @remarks use {@link SaveDashboardCommand} factory function to instantiate
      */
     export type SaveDashboardCommand = IGdcKdMessageEvent<GdcKdCommandType.Save, IKdSaveCommandBody>;
 
@@ -191,8 +221,6 @@ export namespace EmbeddedKpiDashboard {
      *    dialog asking to discard unsaved changes. On success SwitchedToView will be posted
      * -  if KD is currently viewing dashboard, SwitchedToView will be posted back immediately
      * -  if KD is not currently showing any dashboard, CommandFailed is posted
-     *
-     * @remarks use {@link CancelEditCommand} factory function to instantiate
      */
     export type CancelEditCommand = IGdcKdMessageEvent<GdcKdCommandType.CancelEdit, null>;
 
@@ -217,8 +245,6 @@ export namespace EmbeddedKpiDashboard {
      *
      * -  if KD is currently viewing dashboard or not not showing any dashboard, CommandFailed will
      *    be posted
-     *
-     * @remarks use {@link DeleteDashboardCommand} factory function to instantiate
      */
     export type DeleteDashboardCommand = IGdcKdMessageEvent<GdcKdCommandType.Delete, null>;
 
@@ -237,8 +263,6 @@ export namespace EmbeddedKpiDashboard {
      * -  if KD shows dashboard in edit mode, will keep edit mode and post SwitchedToEdit as if just switched
      *    from view mode
      * -  if no dashboard currently displayed, posts CommandFailed
-     *
-     * @remarks use {@link SwitchToEditCommand} factory function to instantiate
      */
     export type SwitchToEditCommand = IGdcKdMessageEvent<GdcKdCommandType.SwitchToEdit, null>;
 
@@ -306,6 +330,105 @@ export namespace EmbeddedKpiDashboard {
      */
     export function isSetSizeCommandData(obj: any): obj is SetSizeCommandData {
         return getEventType(obj) === GdcKdCommandType.SetSize;
+    }
+
+    //
+    // Add widget command
+    //
+
+    export interface IKpiWidget {
+        type: 'kpi';
+    }
+
+    export type InsightRef = { identifier: string } | { uri: string };
+
+    export interface IInsightWidget {
+        type: 'insight';
+        ref: InsightRef;
+    }
+
+    export interface IAddWidgetBody {
+        widget: IKpiWidget | IInsightWidget;
+    }
+
+    /**
+     * Adds new widget onto dashboard. New row will be created on top of the dashboard, the widget
+     * will be placed into its first column.
+     *
+     * It is currently possible to add either a KPI or an Insight. When adding either of these, KD will
+     * scroll to top so that the newly added widget is visible.
+     *
+     * For KPI, the KD will start the KPI customization flow right after the KPI is placed.
+     * Insights are placed without need for further customization
+     *
+     * Contract:
+     *
+     * -  if KD is currently editing a dashboard, then depending on widget type:
+     *    -  KPI is added to dashboard, customization flow is started, WidgetAdded will be posted
+     *    -  Insight is added to dashboard, WidgetAdded will be posted
+     *
+     * -  if insight reference included in command payload does not refer to a valid insight, CommandFailed
+     *    will be posted
+     *
+     * -  if KD is in view mode or not showing any dashboard, then CommandFailed will be posted
+     */
+    export type AddWidgetCommand = IGdcKdMessageEvent<GdcKdCommandType.AddWidget, IAddWidgetBody>;
+
+    export type AddWidgetCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.AddWidget, IAddWidgetBody>;
+
+    /**
+     * Type-guard checking whether object is an instance of {@link AddWidgetCommandData}.
+     *
+     * @param obj - object to test
+     */
+    export function isAddWidgetCommandData(obj: any): obj is AddWidgetCommandData {
+        return getEventType(obj) === GdcKdCommandType.AddWidget;
+    }
+
+    /**
+     * Adds new attribute filter to filter bar and starts the filter customization flow.
+     *
+     * Contract:
+     *
+     * -  if KD is currently editing a dashboard, adds new attribute filter, starts customization flow; FilterAdded
+     *    will be posted right after customization starts
+     *
+     * -  if KD is currently in view mode or does not show any dashboard, will post CommandFailed
+     */
+    export type AddFilterCommand = IGdcKdMessageEvent<GdcKdCommandType.AddFilter, null>;
+
+    export type AddFilterCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.AddFilter, null>;
+
+    /**
+     * Type-guard checking whether object is an instance of {@link AddFilterCommandData}.
+     *
+     * @param obj - object to test
+     */
+    export function isAddFilterCommandData(obj: any): obj is AddFilterCommandData {
+        return getEventType(obj) === GdcKdCommandType.AddFilter;
+    }
+
+    /**
+     * Exports dashboard to PDF.
+     *
+     * Contract:
+     *
+     * -  if KD shows dashboard in view mode, will export dashboard to PDF and post ExportFinished once ready for
+     *    exporting
+     * -  if KD shwows dashboard in edit mode or not not showing any dashboard, CommandFailed will
+     *    be posted
+     */
+    export type ExportToPDFCommand = IGdcKdMessageEvent<GdcKdCommandType.ExportToPDF, null>;
+
+    export type ExportToPDFCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.ExportToPDF, null>;
+
+    /**
+     * Type-guard checking whether object is an instance of {@link ExportToPDFCommandData}.
+     *
+     * @param obj - object to test
+     */
+    export function isExportToPDFCommandData(obj: any): obj is ExportToPDFCommandData {
+        return getEventType(obj) === GdcKdCommandType.ExportToPDF;
     }
 
     export interface INoPermissionsBody {
@@ -428,4 +551,47 @@ export namespace EmbeddedKpiDashboard {
     }
 
     export type PlaformData = IGdcKdMessageEnvelope<GdcKdEventType.Platform, IPlaformBody>;
+
+    export interface IInsightWidgetBody {
+        widgetCategory: 'kpi' | 'visualization';
+        identifier?: string;
+        uri?: string;
+        title?: string;
+    }
+    export interface IWidgetAddedBody {
+        insight?: IInsightWidgetBody;
+    }
+
+    /**
+     * This event is emitted after KD added a new widget to a dashboard. If the widget is
+     * an insight, then meta information about the insight will be returned.
+     *
+     * Note: when this event is added for a KPI widget, it means the customization flow for the KPI has
+     * started. The user may still 'just' click somewhere outside of the KPI configuration and the KPI will
+     * be discarded.
+     */
+    export type WidgetAddedData = IGdcKdMessageEnvelope<GdcKdEventType.WidgetAdded, IWidgetAddedBody>;
+
+    export type FilterAddedBody = IKdAvailableCommands;
+
+    /**
+     * This event is emitted after KD added a new filter to dashboard's filter bar and started its
+     * customization flow.
+     *
+     * Note: users can still cancel the filter customization flow meaning no new attribute filter
+     * will end on the filter bar.
+     */
+    export type FilterAddedData = IGdcKdMessageEnvelope<GdcKdEventType.FilterAdded, FilterAddedBody>;
+
+    export type ExportToPDFFinishedBody = IKdAvailableCommands & {
+        /**
+         * Link to the file containing exported data.
+         */
+        link: string;
+    };
+
+    /**
+     * This event is emitted after dashboard has been exported to PDF
+     */
+    export type ExportToPDFFinishedData = IGdcKdMessageEnvelope<GdcKdEventType.ExportedToPDF, ExportToPDFFinishedBody>;
 }
