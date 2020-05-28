@@ -65,7 +65,7 @@ export namespace EmbeddedKpiDashboard {
         /**
          * The command export a dashboard.
          */
-        ExportToPDF = 'exportToPDF'
+        ExportToPdf = 'exportToPdf'
     }
 
     /**
@@ -155,7 +155,7 @@ export namespace EmbeddedKpiDashboard {
         /**
          * Type represent that the export action is finished.
          */
-        ExportedToPDF = 'exportedToPDF',
+        ExportedToPdf = 'exportedToPdf',
 
         /**
          * Type represent that the drill performed
@@ -340,15 +340,39 @@ export namespace EmbeddedKpiDashboard {
         type: 'kpi';
     }
 
-    export type InsightRef = { identifier: string } | { uri: string };
+    export interface IIdentifierInsightRef {
+        identifier: string;
+    }
+
+    export interface IUriInsightRef {
+        uri: string;
+    }
 
     export interface IInsightWidget {
         type: 'insight';
-        ref: InsightRef;
+        ref: IIdentifierInsightRef | IUriInsightRef;
     }
 
     export interface IAddWidgetBody {
         widget: IKpiWidget | IInsightWidget;
+    }
+
+    /**
+     * Type-guard checking whether object is an instance of {@link IdentifierInsightRef}.
+     *
+     * @param obj - object to test
+     */
+    export function isIdentifierInsight(obj: any): obj is IIdentifierInsightRef {
+        return obj.identifier;
+    }
+
+    /**
+     * Type-guard checking whether object is an instance of {@link UriInsightRef}.
+     *
+     * @param obj - object to test
+     */
+    export function isUriInsight(obj: any): obj is IUriInsightRef {
+        return obj.uri;
     }
 
     /**
@@ -418,17 +442,17 @@ export namespace EmbeddedKpiDashboard {
      * -  if KD shwows dashboard in edit mode or not not showing any dashboard, CommandFailed will
      *    be posted
      */
-    export type ExportToPDFCommand = IGdcKdMessageEvent<GdcKdCommandType.ExportToPDF, null>;
+    export type ExportToPdfCommand = IGdcKdMessageEvent<GdcKdCommandType.ExportToPdf, null>;
 
-    export type ExportToPDFCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.ExportToPDF, null>;
+    export type ExportToPdfCommandData = IGdcKdMessageEnvelope<GdcKdCommandType.ExportToPdf, null>;
 
     /**
-     * Type-guard checking whether object is an instance of {@link ExportToPDFCommandData}.
+     * Type-guard checking whether object is an instance of {@link ExportToPdfCommandData}.
      *
      * @param obj - object to test
      */
-    export function isExportToPDFCommandData(obj: any): obj is ExportToPDFCommandData {
-        return getEventType(obj) === GdcKdCommandType.ExportToPDF;
+    export function isExportToPdfCommandData(obj: any): obj is ExportToPdfCommandData {
+        return getEventType(obj) === GdcKdCommandType.ExportToPdf;
     }
 
     export interface INoPermissionsBody {
@@ -558,7 +582,7 @@ export namespace EmbeddedKpiDashboard {
         uri?: string;
         title?: string;
     }
-    export interface IWidgetAddedBody {
+    export interface IAddedWidgetBody {
         insight?: IInsightWidgetBody;
     }
 
@@ -570,7 +594,7 @@ export namespace EmbeddedKpiDashboard {
      * started. The user may still 'just' click somewhere outside of the KPI configuration and the KPI will
      * be discarded.
      */
-    export type WidgetAddedData = IGdcKdMessageEnvelope<GdcKdEventType.WidgetAdded, IWidgetAddedBody>;
+    export type WidgetAddedData = IGdcKdMessageEnvelope<GdcKdEventType.WidgetAdded, IAddedWidgetBody>;
 
     export type FilterAddedBody = IKdAvailableCommands;
 
@@ -583,7 +607,7 @@ export namespace EmbeddedKpiDashboard {
      */
     export type FilterAddedData = IGdcKdMessageEnvelope<GdcKdEventType.FilterAdded, FilterAddedBody>;
 
-    export type ExportToPDFFinishedBody = IKdAvailableCommands & {
+    export type ExportToPdfFinishedBody = IKdAvailableCommands & {
         /**
          * Link to the file containing exported data.
          */
@@ -593,5 +617,5 @@ export namespace EmbeddedKpiDashboard {
     /**
      * This event is emitted after dashboard has been exported to PDF
      */
-    export type ExportToPDFFinishedData = IGdcKdMessageEnvelope<GdcKdEventType.ExportedToPDF, ExportToPDFFinishedBody>;
+    export type ExportToPdfFinishedData = IGdcKdMessageEnvelope<GdcKdEventType.ExportedToPdf, ExportToPdfFinishedBody>;
 }
