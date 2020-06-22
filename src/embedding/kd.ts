@@ -4,7 +4,8 @@ import {
     getEventType,
     GdcProductName,
     IGdcMessageEnvelope,
-    IDrillableItemsCommandBody
+    IDrillableItemsCommandBody,
+    EmbeddedGdc
 } from './common';
 
 export namespace EmbeddedKpiDashboard {
@@ -65,7 +66,17 @@ export namespace EmbeddedKpiDashboard {
         /**
          * The command export a dashboard.
          */
-        ExportToPdf = 'exportToPdf'
+        ExportToPdf = 'exportToPdf',
+
+        /**
+         * The command to add or update filter context
+         */
+        SetFilterContext = 'setFilterContext',
+
+        /**
+         * The command to remove filter item from current filter context
+         */
+        RemoveFilterContext = 'removeFilterContext'
     }
 
     /**
@@ -160,7 +171,22 @@ export namespace EmbeddedKpiDashboard {
         /**
          * Type represent that the drill performed
          */
-        Drill = 'drill'
+        Drill = 'drill',
+
+        /**
+         * Type represent that the filter context is changed
+         */
+        FilterContextChanged = 'filterContextChanged',
+
+        /**
+         * Type represent that the set filter context action is finished
+         */
+        SetFilterContextFinished = 'setFilterContextFinished',
+
+        /**
+         * Type represent that the remove filter context action is finished
+         */
+        RemoveFilterContextFinished = 'removeFilterContextFinished'
     }
 
     /**
@@ -316,7 +342,7 @@ export namespace EmbeddedKpiDashboard {
         /**
          * the height of the hosting iframe
          */
-        heigth: number;
+        height: number;
     }
 
     export type SetSizeCommand = IGdcKdMessageEvent<GdcKdCommandType.SetSize, ISetSizeCommandBody>;
@@ -330,6 +356,69 @@ export namespace EmbeddedKpiDashboard {
      */
     export function isSetSizeCommandData(obj: any): obj is SetSizeCommandData {
         return getEventType(obj) === GdcKdCommandType.SetSize;
+    }
+
+    /**
+     * Data type of SetFilterContext command
+     */
+    export type SetFilterContextCommandData = IGdcKdMessageEnvelope<
+        GdcKdCommandType.SetFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Add or update the filter context
+     *
+     * Contract:
+     * - If filters are same with filters on the KD filter bar, then update the filters on the filter bar
+     *   and apply the filters to dashboard
+     * - In edit mode, if filters are new and then add them to the KD filter bar and apply to dashboard
+     * - In-case the KD can not apply the filters, a CommandFailed will be posted. The reason could be:
+     *   - Add new filter in view mode
+     *   - Filter is not existed in the dataset
+     *   - Filter is existed but wrong elements input data
+     *   - Exceed the limit number of filter items
+     */
+    export type SetFilterContextCommand = IGdcKdMessageEvent<
+        GdcKdCommandType.SetFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Type-guard checking whether an object is an instance of {@link SetFilterContextCommand}
+     *
+     * @param obj - object to test
+     */
+    export function isSetFilterContextCommandData(obj: any): obj is SetFilterContextCommandData {
+        return getEventType(obj) === GdcKdCommandType.SetFilterContext;
+    }
+
+    /**
+     * Data type of removeFilterContext command
+     */
+    export type RemoveFilterContextCommandData = IGdcKdMessageEnvelope<
+        GdcKdCommandType.RemoveFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Remove the filter context
+     * Contract:
+     * - if filters are in the filter bar, then remove the filters on the filter bar and update insight
+     * - if filters are not in the filter bar and then a CommandFailed will be posted.
+     */
+    export type RemoveFilterContextCommand = IGdcKdMessageEvent<
+        GdcKdCommandType.RemoveFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Type-guard checking whether an object is an instance of {@link RemoveFilterContextCommand}
+     *
+     * @param obj - object to test
+     */
+    export function isRemoveFilterContextCommandData(obj: any): obj is RemoveFilterContextCommandData {
+        return getEventType(obj) === GdcKdCommandType.RemoveFilterContext;
     }
 
     //
@@ -439,7 +528,7 @@ export namespace EmbeddedKpiDashboard {
      *
      * -  if KD shows dashboard in view mode, will export dashboard to PDF and post ExportFinished once ready for
      *    exporting
-     * -  if KD shwows dashboard in edit mode or not not showing any dashboard, CommandFailed will
+     * -  if KD shows dashboard in edit mode or not not showing any dashboard, CommandFailed will
      *    be posted
      */
     export type ExportToPdfCommand = IGdcKdMessageEvent<GdcKdCommandType.ExportToPdf, null>;
@@ -512,7 +601,7 @@ export namespace EmbeddedKpiDashboard {
     export type IDashboardBody = IKdAvailableCommands & IDashboardObjectMeta;
 
     /**
-     * Data type of event that was emited when a dashboard has been created and saved.
+     * Data type of event that was emitted when a dashboard has been created and saved.
      */
     export type IDashboardCreatedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardCreated,
@@ -520,7 +609,7 @@ export namespace EmbeddedKpiDashboard {
     >;
 
     /**
-     * Data type of event that was emited when the content is fully loaded,
+     * Data type of event that was emitted when the content is fully loaded,
      * and the user has permissions to access the dashboard.
      */
     export type IDashboardLoadedData = IGdcKdMessageEnvelope<
@@ -529,7 +618,7 @@ export namespace EmbeddedKpiDashboard {
     >;
 
     /**
-     * Data type of event that was emited when the existing dashboard has been updated.
+     * Data type of event that was emitted when the existing dashboard has been updated.
      */
     export type IDashboardUpdatedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardUpdated,
@@ -537,7 +626,7 @@ export namespace EmbeddedKpiDashboard {
     >;
 
     /**
-     * Data type of event that was emited when the dashboard has been saved.
+     * Data type of event that was emitted when the dashboard has been saved.
      */
     export type IDashboardSavedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardSaved,
@@ -545,7 +634,7 @@ export namespace EmbeddedKpiDashboard {
     >;
 
     /**
-     * Data type of event that was emited when the dashboard has been deleted.
+     * Data type of event that was emitted when the dashboard has been deleted.
      */
     export type IDashboardDeletedData = IGdcKdMessageEnvelope<
         GdcKdEventType.DashboardDeleted,
@@ -618,4 +707,51 @@ export namespace EmbeddedKpiDashboard {
      * This event is emitted after dashboard has been exported to PDF
      */
     export type ExportToPdfFinishedData = IGdcKdMessageEnvelope<GdcKdEventType.ExportedToPdf, ExportToPdfFinishedBody>;
+
+    //
+    // setFilterContext finished
+    //
+
+    /**
+     * Data type of event that was emitted after finishing set filter context
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     */
+    export type SetFilterContextFinishedData = IGdcKdMessageEnvelope<
+        GdcKdEventType.SetFilterContextFinished,
+        IKdAvailableCommands
+    >;
+
+    //
+    // removeFilterContext finished
+    //
+
+    /**
+     * Data type of event that was emitted after finishing remove filter context
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     */
+    export type RemoveFilterContextFinishedData = IGdcKdMessageEnvelope<
+        GdcKdEventType.RemoveFilterContextFinished,
+        IKdAvailableCommands
+    >;
+
+    //
+    // FilterContext changed
+    //
+
+    /**
+     * Main data of Filter context changed event
+     */
+    export type FilterContextChangedBody = IKdAvailableCommands & EmbeddedGdc.IFilterContextContent;
+
+    /**
+     * Data type of event that was emitted after finishing change filter context
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     */
+    export type FilterContextChangedData = IGdcKdMessageEnvelope<
+        GdcKdEventType.FilterContextChanged,
+        FilterContextChangedBody
+    >;
 }
