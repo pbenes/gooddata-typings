@@ -8,7 +8,8 @@ import {
     isCommandFailedData,
     GdcProductName,
     getEventType,
-    IDrillableItemsCommandBody
+    IDrillableItemsCommandBody,
+    EmbeddedGdc
 } from './common';
 import { IBaseExportConfig } from '../Export';
 import { VisualizationObject } from '../VisualizationObject';
@@ -20,7 +21,7 @@ export namespace EmbeddedAnalyticalDesigner {
     /**
      * Insight Export configuration
      *
-     * Note: AFM is ommitted on purpose; it should be added by AD itself; create new type using Omit<>
+     * Note: AFM is omitted on purpose; it should be added by AD itself; create new type using Omit<>
      */
     export interface IInsightExportConfig extends IBaseExportConfig {
         /**
@@ -85,7 +86,17 @@ export namespace EmbeddedAnalyticalDesigner {
         /**
          * The command redo to next state
          */
-        Redo = 'redo'
+        Redo = 'redo',
+
+        /**
+         * The command to add or update filter context
+         */
+        SetFilterContext = 'setFilterContext',
+
+        /**
+         * The command to remove filter item from current filter context
+         */
+        RemoveFilterContext = 'removeFilterContext'
     }
 
     /**
@@ -138,7 +149,22 @@ export namespace EmbeddedAnalyticalDesigner {
         /**
          * Type that drill performed
          */
-        Drill = 'drill'
+        Drill = 'drill',
+
+        /**
+         * Type represent that the filter context is changed
+         */
+        FilterContextChanged = 'filterContextChanged',
+
+        /**
+         * Type represent that the set filter context action is finished
+         */
+        SetFilterContextFinished = 'setFilterContextFinished',
+
+        /**
+         * Type represent that the remove filter context action is finished
+         */
+        RemoveFilterContextFinished = 'removeFilterContextFinished'
     }
 
     /**
@@ -516,6 +542,68 @@ export namespace EmbeddedAnalyticalDesigner {
         return getEventType(obj) === GdcAdCommandType.Redo;
     }
 
+    /**
+     * Data type of SetFilterContext command
+     */
+    export type SetFilterContextCommandData = IGdcAdMessageEnvelope<
+        GdcAdCommandType.SetFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Add or update the filter context
+     *
+     * Contract:
+     * - if filters are same with filters on the AD filter bar, then update the filters on the filter bar
+     *   and apply the filters to insight
+     * - if filters are new, then add them to the AD filter bar and apply to insight
+     * - in-case the AD can not apply the filters, a CommandFailed will be posted. The reason could be
+     *   - Filter is not existed in the dataset
+     *   - Filter is existed but wrong elements input data
+     *   - Exceed the limit number of filter items
+     */
+    export type SetFilterContextCommand = IGdcAdMessageEvent<
+        GdcAdCommandType.SetFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Type-guard checking whether an object is an instance of {@link SetFilterContextCommand}
+     *
+     * @param obj - object to test
+     */
+    export function isSetFilterContextCommandData(obj: any): obj is SetFilterContextCommandData {
+        return getEventType(obj) === GdcAdCommandType.SetFilterContext;
+    }
+
+    /**
+     * Data type of removeFilterContext command
+     */
+    export type RemoveFilterContextCommandData = IGdcAdMessageEnvelope<
+        GdcAdCommandType.RemoveFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Remove the filter context
+     * Contract:
+     * - if filters are in the filter bar, then remove the filters on the filter bar and update insight
+     * - if filters are not in the filter bar, then a CommandFailed will be posted.
+     */
+    export type RemoveFilterContextCommand = IGdcAdMessageEvent<
+        GdcAdCommandType.RemoveFilterContext,
+        EmbeddedGdc.IFilterContextContent
+    >;
+
+    /**
+     * Type-guard checking whether an object is an instance of {@link RemoveFilterContextCommand}
+     *
+     * @param obj - object to test
+     */
+    export function isRemoveFilterContextCommandData(obj: any): obj is RemoveFilterContextCommandData {
+        return getEventType(obj) === GdcAdCommandType.RemoveFilterContext;
+    }
+
     //
     // Events
     //
@@ -525,7 +613,7 @@ export namespace EmbeddedAnalyticalDesigner {
      */
     export interface IAvailableCommands {
         /**
-         * Array of avaiable commands types
+         * Array of available commands types
          */
         availableCommands: GdcAdCommandType[];
     }
@@ -785,4 +873,51 @@ export namespace EmbeddedAnalyticalDesigner {
     export function isRedoFinishedData(obj: any): obj is RedoFinishedData {
         return getEventType(obj) === GdcAdEventType.RedoFinished;
     }
+
+    //
+    // setFilterContext finished
+    //
+
+    /**
+     * Data type of event that was emitted after finishing set filter context
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     */
+    export type SetFilterContextFinishedData = IGdcAdMessageEnvelope<
+        GdcAdEventType.SetFilterContextFinished,
+        IAvailableCommands
+    >;
+
+    //
+    // removeFilterContext finished
+    //
+
+    /**
+     * Data type of event that was emitted after finishing remove filter context
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     */
+    export type RemoveFilterContextFinishedData = IGdcAdMessageEnvelope<
+        GdcAdEventType.RemoveFilterContextFinished,
+        IAvailableCommands
+    >;
+
+    //
+    // FilterContext changed
+    //
+
+    /**
+     * Main data of Filter context changed event
+     */
+    export type FilterContextChangedBody = IAvailableCommands & EmbeddedGdc.IFilterContextContent;
+
+    /**
+     * Data type of event that was emitted after finishing change filter context
+     *
+     * Note: The main event data was wrapped to application and product data structure
+     */
+    export type FilterContextChangedData = IGdcAdMessageEnvelope<
+        GdcAdEventType.FilterContextChanged,
+        FilterContextChangedBody
+    >;
 }

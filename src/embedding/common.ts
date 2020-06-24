@@ -1,5 +1,7 @@
 // (C) 2020 GoodData Corporation
 
+import { AFM } from '../AFM';
+
 /**
  * List of products using post events
  */
@@ -173,7 +175,7 @@ export interface IObjectMeta {
 }
 
 /**
- * Addtional information for action payload. Use for internal reducers, sagas
+ * Additional information for action payload. Use for internal reducers, sagas
  */
 export interface IPostMessageContextPayload {
     postMessageContext?: {
@@ -216,4 +218,31 @@ export interface IDrillableItemsCommandBody extends ISimpleDrillableItemsCommand
      * Master measures items - In-case, a derived measure is composed from a master measure.
      */
     composedFrom?: ISimpleDrillableItemsCommandBody;
+}
+
+export namespace EmbeddedGdc {
+    // re-export from AFM namespace
+    export type IPositiveAttributeFilter = AFM.IPositiveAttributeFilter;
+    export type INegativeAttributeFilter = AFM.INegativeAttributeFilter;
+    export type IAbsoluteDateFilter = AFM.IAbsoluteDateFilter;
+    export type IRelativeDateFilter = AFM.IRelativeDateFilter;
+    export type AttributeFilterItem = IPositiveAttributeFilter | INegativeAttributeFilter;
+    export type DateFilterItem = IAbsoluteDateFilter | IRelativeDateFilter;
+    export type FilterItem = DateFilterItem | AttributeFilterItem;
+
+    export const isDateFilter = AFM.isDateFilter;
+    export const isRelativeDateFilter = AFM.isRelativeDateFilter;
+    export const isAbsoluteDateFilter = AFM.isAbsoluteDateFilter;
+    export const isAttributeFilter = AFM.isAttributeFilter;
+    export const isPositiveAttributeFilter = AFM.isPositiveAttributeFilter;
+    export const isNegativeAttributeFilter = AFM.isPositiveAttributeFilter;
+
+    /**
+     * The filter context content that is used to exchange the filter context
+     * between AD, KD embedded page and parent application
+     */
+    export interface IFilterContextContent {
+        // array of date or attribute filter items
+        filters: FilterItem[];
+    }
 }
