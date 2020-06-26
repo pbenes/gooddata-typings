@@ -229,13 +229,16 @@ export namespace EmbeddedGdc {
     export type AttributeFilterItem = IPositiveAttributeFilter | INegativeAttributeFilter;
     export type DateFilterItem = IAbsoluteDateFilter | IRelativeDateFilter;
     export type FilterItem = DateFilterItem | AttributeFilterItem;
+    export type ObjQualifier = AFM.ObjQualifier;
 
     export const isDateFilter = AFM.isDateFilter;
     export const isRelativeDateFilter = AFM.isRelativeDateFilter;
     export const isAbsoluteDateFilter = AFM.isAbsoluteDateFilter;
     export const isAttributeFilter = AFM.isAttributeFilter;
     export const isPositiveAttributeFilter = AFM.isPositiveAttributeFilter;
-    export const isNegativeAttributeFilter = AFM.isPositiveAttributeFilter;
+    export const isNegativeAttributeFilter = AFM.isNegativeAttributeFilter;
+    export const isObjIdentifierQualifier = AFM.isObjIdentifierQualifier;
+    export const isObjectUriQualifier = AFM.isObjectUriQualifier;
 
     /**
      * The filter context content that is used to exchange the filter context
