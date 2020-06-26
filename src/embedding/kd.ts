@@ -186,7 +186,22 @@ export namespace EmbeddedKpiDashboard {
         /**
          * Type represent that the remove filter context action is finished
          */
-        RemoveFilterContextFinished = 'removeFilterContextFinished'
+        RemoveFilterContextFinished = 'removeFilterContextFinished',
+
+        /**
+         * Type that represents started drill to URL. The event does not contain an URL. The event can be used as
+         * notification to display a loading indicator as the URL resolving takes some time. The URL is sent in
+         * DrillToUrlResolved event which is posted after the URL is resolved. The event also contains an ID that can
+         * be matched with ID in subsequently posted DrillToUrlResolved event.
+         */
+        DrillToUrlStarted = 'drillToUrlStarted',
+
+        /**
+         * Type that represents resolved drill to URL. The event is sent after DrillToUrlStarted event was posted and
+         * it contains the resolved URL. The event also contains an ID which can be matched with ID from
+         * DrillToUrlStarted event.
+         */
+        DrillToUrlResolved = 'drillToUrlResolved'
     }
 
     /**
@@ -753,5 +768,24 @@ export namespace EmbeddedKpiDashboard {
     export type FilterContextChangedData = IGdcKdMessageEnvelope<
         GdcKdEventType.FilterContextChanged,
         FilterContextChangedBody
+    >;
+
+    export interface IDrillToUrlStartedDataBody {
+        id: string;
+    }
+
+    export interface IDrillToUrlResolvedDataBody {
+        id: string;
+        url: string;
+    }
+
+    export type DrillToUrlStartedData = IGdcKdMessageEnvelope<
+        GdcKdEventType.DrillToUrlStarted,
+        IDrillToUrlStartedDataBody
+    >;
+
+    export type DrillToUrlResolvedData = IGdcKdMessageEnvelope<
+        GdcKdEventType.DrillToUrlResolved,
+        IDrillToUrlResolvedDataBody
     >;
 }
