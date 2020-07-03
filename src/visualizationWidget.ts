@@ -3,7 +3,7 @@
 import { IObjectMeta } from './Meta';
 import { ExtendedDateFilters } from './ExtendedDateFilters';
 import { VisualizationObject } from './VisualizationObject';
-export interface IVisualizationWidget {
+export interface IVisualizationWidget  extends VisualizationObject.IObjectWithProperties {
     meta: IObjectMeta;
     content: {
         visualization: string;
@@ -13,6 +13,8 @@ export interface IVisualizationWidget {
             | ExtendedDateFilters.IAttributeFilterReference
         >;
         drills?: IDrillDefinition;
+        properties?: string;
+        references?: VisualizationObject.IReferenceItems;
     };
 }
 

@@ -184,7 +184,14 @@ export namespace VisualizationObject {
         periodsAgo: number;
     }
 
-    export interface IVisualizationObject {
+    export interface IObjectWithProperties {
+        content: {
+            properties?: string;
+            references?: VisualizationObject.IReferenceItems;
+            [keys: string]: any;
+        };
+    }
+    export interface IVisualizationObject extends IObjectWithProperties {
         meta: IObjectMeta;
         content: IVisualizationObjectContent;
     }
