@@ -1,5 +1,5 @@
 // (C) 2020 GoodData Corporation
-
+import { isEmpty } from 'lodash';
 import { AFM } from '../AFM';
 
 /**
@@ -230,7 +230,13 @@ export namespace EmbeddedGdc {
     export type DateFilterItem = IAbsoluteDateFilter | IRelativeDateFilter;
     export type FilterItem = DateFilterItem | AttributeFilterItem;
     export type ObjQualifier = AFM.ObjQualifier;
-
+    export interface IRemoveDateFilterItem {
+        dataSet: ObjQualifier;
+    }
+    export interface IRemoveAttributeFilterItem {
+        displayForm: ObjQualifier;
+    }
+    export type RemoveFilterItem = IRemoveDateFilterItem | IRemoveAttributeFilterItem;
     export const isDateFilter = AFM.isDateFilter;
     export const isRelativeDateFilter = AFM.isRelativeDateFilter;
     export const isAbsoluteDateFilter = AFM.isAbsoluteDateFilter;
@@ -247,5 +253,22 @@ export namespace EmbeddedGdc {
     export interface IFilterContextContent {
         // array of date or attribute filter items
         filters: FilterItem[];
+    }
+
+    /**
+     * The remove filter context content that is used to exchange the filter context
+     * between AD, KD embedded page and parent application
+     */
+    export interface IRemoveFilterContextContent {
+        // array of date or attribute filter items
+        filters: RemoveFilterItem[];
+    }
+
+    export function isRemoveDateFilter(filter: any): filter is EmbeddedGdc.IRemoveDateFilterItem {
+        return !isEmpty(filter) && (filter as EmbeddedGdc.IRemoveDateFilterItem).dataSet !== undefined;
+    }
+
+    export function isRemoveAttributeFilter(filter: any): filter is EmbeddedGdc.IRemoveAttributeFilterItem {
+        return !isEmpty(filter) && (filter as EmbeddedGdc.IRemoveAttributeFilterItem).displayForm !== undefined;
     }
 }

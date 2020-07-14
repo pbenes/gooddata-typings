@@ -413,7 +413,7 @@ export namespace EmbeddedKpiDashboard {
      */
     export type RemoveFilterContextCommandData = IGdcKdMessageEnvelope<
         GdcKdCommandType.RemoveFilterContext,
-        EmbeddedGdc.IFilterContextContent
+        EmbeddedGdc.IRemoveFilterContextContent
     >;
 
     /**
@@ -424,7 +424,7 @@ export namespace EmbeddedKpiDashboard {
      */
     export type RemoveFilterContextCommand = IGdcKdMessageEvent<
         GdcKdCommandType.RemoveFilterContext,
-        EmbeddedGdc.IFilterContextContent
+        EmbeddedGdc.IRemoveFilterContextContent
     >;
 
     /**

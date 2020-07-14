@@ -581,7 +581,7 @@ export namespace EmbeddedAnalyticalDesigner {
      */
     export type RemoveFilterContextCommandData = IGdcAdMessageEnvelope<
         GdcAdCommandType.RemoveFilterContext,
-        EmbeddedGdc.IFilterContextContent
+        EmbeddedGdc.IRemoveFilterContextContent
     >;
 
     /**
@@ -592,7 +592,7 @@ export namespace EmbeddedAnalyticalDesigner {
      */
     export type RemoveFilterContextCommand = IGdcAdMessageEvent<
         GdcAdCommandType.RemoveFilterContext,
-        EmbeddedGdc.IFilterContextContent
+        EmbeddedGdc.IRemoveFilterContextContent
     >;
 
     /**
