@@ -3,7 +3,7 @@
 import { IObjectMeta } from './Meta';
 import { ExtendedDateFilters } from './ExtendedDateFilters';
 import { VisualizationObject } from './VisualizationObject';
-export interface IVisualizationWidget  extends VisualizationObject.IObjectWithProperties {
+export interface IVisualizationWidget {
     meta: IObjectMeta;
     content: {
         visualization: string;
