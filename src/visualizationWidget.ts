@@ -13,6 +13,8 @@ export interface IVisualizationWidget {
             | ExtendedDateFilters.IAttributeFilterReference
         >;
         drills?: IDrillDefinition;
+        properties?: string;
+        references?: VisualizationObject.IReferenceItems;
     };
 }
 
