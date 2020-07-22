@@ -1,5 +1,6 @@
 // (C) 2020 GoodData Corporation
-import { isEmpty } from 'lodash';
+import isEmpty = require('lodash/isEmpty');
+
 import { AFM } from '../AFM';
 
 /**
@@ -224,12 +225,28 @@ export namespace EmbeddedGdc {
     // re-export from AFM namespace
     export type IPositiveAttributeFilter = AFM.IPositiveAttributeFilter;
     export type INegativeAttributeFilter = AFM.INegativeAttributeFilter;
-    export type IAbsoluteDateFilter = AFM.IAbsoluteDateFilter;
-    export type IRelativeDateFilter = AFM.IRelativeDateFilter;
+    export interface IAbsoluteDateFilter {
+        absoluteDateFilter: {
+            // dataSet is required in AD only
+            dataSet?: ObjQualifier;
+            from: string;
+            to: string;
+        };
+    }
+    export interface IRelativeDateFilter {
+        relativeDateFilter: {
+            // dataSet is required in AD only
+            dataSet?: ObjQualifier;
+            granularity: string;
+            from: number;
+            to: number;
+        };
+    }
     export type AttributeFilterItem = IPositiveAttributeFilter | INegativeAttributeFilter;
     export type DateFilterItem = IAbsoluteDateFilter | IRelativeDateFilter;
     export type FilterItem = DateFilterItem | AttributeFilterItem;
     export type ObjQualifier = AFM.ObjQualifier;
+    type CompatibilityFilter = FilterItem | AFM.IExpressionFilter | AFM.IMeasureValueFilter;
     export interface IRemoveDateFilterItem {
         dataSet: ObjQualifier;
     }
@@ -237,9 +254,15 @@ export namespace EmbeddedGdc {
         displayForm: ObjQualifier;
     }
     export type RemoveFilterItem = IRemoveDateFilterItem | IRemoveAttributeFilterItem;
-    export const isDateFilter = AFM.isDateFilter;
-    export const isRelativeDateFilter = AFM.isRelativeDateFilter;
-    export const isAbsoluteDateFilter = AFM.isAbsoluteDateFilter;
+    export function isDateFilter(filter: CompatibilityFilter): filter is DateFilterItem {
+        return !isEmpty(filter) && (isRelativeDateFilter(filter) || isAbsoluteDateFilter(filter));
+    }
+    export function isRelativeDateFilter(filter: CompatibilityFilter): filter is IRelativeDateFilter {
+        return !isEmpty(filter) && (filter as IRelativeDateFilter).relativeDateFilter !== undefined;
+    }
+    export function isAbsoluteDateFilter(filter: CompatibilityFilter): filter is IAbsoluteDateFilter {
+        return !isEmpty(filter) && (filter as IAbsoluteDateFilter).absoluteDateFilter !== undefined;
+    }
     export const isAttributeFilter = AFM.isAttributeFilter;
     export const isPositiveAttributeFilter = AFM.isPositiveAttributeFilter;
     export const isNegativeAttributeFilter = AFM.isNegativeAttributeFilter;
