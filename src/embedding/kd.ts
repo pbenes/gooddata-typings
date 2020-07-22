@@ -76,7 +76,12 @@ export namespace EmbeddedKpiDashboard {
         /**
          * The command to remove filter item from current filter context
          */
-        RemoveFilterContext = 'removeFilterContext'
+        RemoveFilterContext = 'removeFilterContext',
+
+        /**
+         * The command to duplicate a KPI Dashboard
+         */
+        SaveAsDashboard = 'saveAsDashboard'
     }
 
     /**
@@ -251,6 +256,39 @@ export namespace EmbeddedKpiDashboard {
      */
     export function isSaveDashboardCommandData(obj: any): obj is SaveDashboardCommandData {
         return getEventType(obj) === GdcKdCommandType.Save;
+    }
+
+    /**
+     * Creates a new dashboard from an existing dashboard
+     *
+     * Contract:
+     *
+     * -  if KD saves as new an existing dashboard in view mode, the DashboardSaved event will be posted,
+     * the new duplicated dashboard doesn't apply changes from the filter bar.
+     *
+     * -  if KD saves as new an existing dashboard in edit mode, the DashboardSaved event will be posted,
+     * the new duplicated dashboard applies all changes from the existing dashboard like
+     * title, filter context, insight widgets, layout...
+     *
+     * -  if KD saves as new an existing dashboard in the locked dashboard but the user can create new dashboard,
+     * the DashboardSaved event will be posted, the new duplicated dashboard won't be locked.
+     *
+     * -  if KD doesn't have an existing dashboard, no permission to create dashboard or the title is empty,
+     * CommandFailed is posted
+     */
+    export type SaveAsDashboardCommand = IGdcKdMessageEvent<GdcKdCommandType.SaveAsDashboard, IKdSaveCommandBody>;
+
+    export type SaveAsDashboardCommandData = IGdcKdMessageEnvelope<
+                                                GdcKdCommandType.SaveAsDashboard,
+                                                IKdSaveCommandBody>;
+
+    /**
+     * Type-guard checking whether object is an instance of {@link SaveAsDashboardCommandData}.
+     *
+     * @param obj - object to test
+     */
+    export function isSaveAsDashboardCommandData(obj: any): obj is SaveAsDashboardCommandData {
+        return getEventType(obj) === GdcKdCommandType.SaveAsDashboard;
     }
 
     /**
