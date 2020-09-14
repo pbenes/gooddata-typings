@@ -112,7 +112,7 @@ export namespace AFM {
     }
 
     // Filter types and interfaces
-    export type ExtendedFilter = FilterItem | IMeasureValueFilter;
+    export type ExtendedFilter = FilterItem | IMeasureValueFilter | IRankingFilter;
     export type CompatibilityFilter = IExpressionFilter | ExtendedFilter;
     export type FilterItem = DateFilterItem | AttributeFilterItem;
     export type AttributeFilterItem = IPositiveAttributeFilter | INegativeAttributeFilter;
@@ -189,6 +189,17 @@ export namespace AFM {
         measureValueFilter: {
             measure: Qualifier;
             condition?: MeasureValueFilterCondition;
+        };
+    }
+
+    export type RankingFilterOperator = 'TOP' | 'BOTTOM';
+
+    export interface IRankingFilter {
+        rankingFilter: {
+            measures: Qualifier[];
+            attributes?: Qualifier[];
+            operator: RankingFilterOperator;
+            value: number;
         };
     }
 
@@ -335,6 +346,10 @@ export namespace AFM {
 
     export function isMeasureValueFilter(filter: AFM.CompatibilityFilter): filter is AFM.IMeasureValueFilter {
         return !isEmpty(filter) && (filter as AFM.IMeasureValueFilter).measureValueFilter !== undefined;
+    }
+
+    export function isRankingFilter(filter: AFM.CompatibilityFilter): filter is AFM.IRankingFilter {
+        return !isEmpty(filter) && (filter as AFM.IRankingFilter).rankingFilter !== undefined;
     }
 
     export function isExpressionFilter(filter: AFM.CompatibilityFilter): filter is AFM.IExpressionFilter {

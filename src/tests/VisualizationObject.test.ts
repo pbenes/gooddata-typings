@@ -642,6 +642,45 @@ describe('VisualizationObject', () => {
         });
     });
 
+    describe('isRankingFilter', () => {
+        it('should return false when null is tested', () => {
+            const result = VisualizationObject.isRankingFilter(null);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when undefined is tested', () => {
+            const result = VisualizationObject.isRankingFilter(undefined);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when measure value filter is tested', () => {
+            const filter: VisualizationObjectExtendedFilter = {
+                rankingFilter: {
+                    measures: [{
+                        uri: '/gdc/mock/date'
+                    }],
+                    operator: 'TOP',
+                    value: 3
+                }
+            };
+            const result = VisualizationObject.isRankingFilter(filter);
+            expect(result).toEqual(true);
+        });
+
+        it('should return false when positive attribute filter is tested', () => {
+            const filter: VisualizationObjectExtendedFilter = {
+                positiveAttributeFilter: {
+                    displayForm: {
+                        uri: '/gdc/mock/attribute'
+                    },
+                    in: ['/gdc/mock/attribute/value_1', '/gdc/mock/attribute/value_2']
+                }
+            };
+            const result = VisualizationObject.isRankingFilter(filter);
+            expect(result).toEqual(false);
+        });
+    });
+
     describe('isLocalIdentifierQualifier', () => {
         it('should return false when null is tested', () => {
             const result = VisualizationObject.isLocalIdentifierQualifier(null);

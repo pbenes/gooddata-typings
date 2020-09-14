@@ -1,4 +1,4 @@
-// (C) 2007-2019 GoodData Corporation
+// (C) 2007-2020 GoodData Corporation
 import { AFM } from '../AFM';
 import CompatibilityFilter = AFM.CompatibilityFilter;
 import MeasureDefinition = AFM.MeasureDefinition;
@@ -473,6 +473,15 @@ describe('AFM', () => {
             }
         }
     };
+    const rankingFilter: CompatibilityFilter = {
+        rankingFilter: {
+            measures: [{
+                uri: '/gdc/mock/date'
+            }],
+            operator: 'TOP',
+            value: 3
+        }
+    };
 
     describe('isDateFilter', () => {
         it('should return false when null is tested', () => {
@@ -507,6 +516,11 @@ describe('AFM', () => {
 
         it('should return false when measure value filter is tested', () => {
             const result = AFM.isDateFilter(measureValueFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isDateFilter(rankingFilter);
             expect(result).toEqual(false);
         });
 
@@ -552,6 +566,11 @@ describe('AFM', () => {
             expect(result).toEqual(false);
         });
 
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isRelativeDateFilter(rankingFilter);
+            expect(result).toEqual(false);
+        });
+
         it('should return false when expression filter is tested', () => {
             const result = AFM.isRelativeDateFilter(expressionFilter);
             expect(result).toEqual(false);
@@ -591,6 +610,11 @@ describe('AFM', () => {
 
         it('should return false when measure value filter is tested', () => {
             const result = AFM.isAbsoluteDateFilter(measureValueFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isAbsoluteDateFilter(rankingFilter);
             expect(result).toEqual(false);
         });
 
@@ -636,6 +660,11 @@ describe('AFM', () => {
             expect(result).toEqual(false);
         });
 
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isAttributeFilter(rankingFilter);
+            expect(result).toEqual(false);
+        });
+
         it('should return false when expression filter is tested', () => {
             const result = AFM.isAttributeFilter(expressionFilter);
             expect(result).toEqual(false);
@@ -675,6 +704,11 @@ describe('AFM', () => {
 
         it('should return false when measure value filter is tested', () => {
             const result = AFM.isPositiveAttributeFilter(measureValueFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isPositiveAttributeFilter(rankingFilter);
             expect(result).toEqual(false);
         });
 
@@ -720,6 +754,11 @@ describe('AFM', () => {
             expect(result).toEqual(false);
         });
 
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isNegativeAttributeFilter(rankingFilter);
+            expect(result).toEqual(false);
+        });
+
         it('should return false when expression filter is tested', () => {
             const result = AFM.isNegativeAttributeFilter(expressionFilter);
             expect(result).toEqual(false);
@@ -762,8 +801,60 @@ describe('AFM', () => {
             expect(result).toEqual(true);
         });
 
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isMeasureValueFilter(rankingFilter);
+            expect(result).toEqual(false);
+        });
+
         it('should return false when expression filter is tested', () => {
             const result = AFM.isMeasureValueFilter(expressionFilter);
+            expect(result).toEqual(false);
+        });
+    });
+
+    describe('isRankingFilter', () => {
+        it('should return false when null is tested', () => {
+            const result = AFM.isRankingFilter(null);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when undefined is tested', () => {
+            const result = AFM.isRankingFilter(undefined);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when relative date filter is tested', () => {
+            const result = AFM.isRankingFilter(relativeDateFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when absolute date filter is tested', () => {
+            const result = AFM.isRankingFilter(absoluteDateFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when negative attribute filter is tested', () => {
+            const result = AFM.isRankingFilter(negativeAttributeFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when positive attribute filter is tested', () => {
+            const result = AFM.isRankingFilter(positiveAttributeFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when measure value filter is tested', () => {
+            const result = AFM.isRankingFilter(measureValueFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when ranking filter is tested', () => {
+            const result = AFM.isRankingFilter(rankingFilter);
+            expect(result).toEqual(true);
+        });
+
+        it('should return false when expression filter is tested', () => {
+            const result = AFM.isRankingFilter(expressionFilter);
             expect(result).toEqual(false);
         });
     });
@@ -801,6 +892,11 @@ describe('AFM', () => {
 
         it('should return false when measure value filter is tested', () => {
             const result = AFM.isExpressionFilter(measureValueFilter);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when ranking filter is tested', () => {
+            const result = AFM.isExpressionFilter(rankingFilter);
             expect(result).toEqual(false);
         });
 
