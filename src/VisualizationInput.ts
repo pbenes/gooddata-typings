@@ -1,4 +1,4 @@
-// (C) 2019 GoodData Corporation
+// (C) 2019-2020 GoodData Corporation
 import { AFM } from './AFM';
 import { VisualizationObject } from './VisualizationObject';
 
@@ -52,6 +52,7 @@ export namespace VisualizationInput {
     export type IAbsoluteDateFilter = VisualizationObject.IVisualizationObjectAbsoluteDateFilter;
     export type IRelativeDateFilter = VisualizationObject.IVisualizationObjectRelativeDateFilter;
     export type IMeasureValueFilter = VisualizationObject.IMeasureValueFilter;
+    export type IRankingFilter = VisualizationObject.IRankingFilter;
 
     export type IMeasureFilter =
         IAbsoluteDateFilter
@@ -64,7 +65,8 @@ export namespace VisualizationInput {
         | IRelativeDateFilter
         | IPositiveAttributeFilter
         | INegativeAttributeFilter
-        | IMeasureValueFilter;
+        | IMeasureValueFilter
+        | IRankingFilter;
 
     export type ISort = AFM.IAttributeSortItem | AFM.IMeasureSortItem;
     export type ITotal = VisualizationObject.IVisualizationTotal;
@@ -111,6 +113,10 @@ export namespace VisualizationInput {
 
     export function isMeasureValueFilter(obj: any): obj is IMeasureValueFilter {
         return VisualizationObject.isMeasureValueFilter(obj);
+    }
+
+    export function isRankingFilter(obj: any): obj is IRankingFilter {
+        return VisualizationObject.isRankingFilter(obj);
     }
 
     export function isSort(obj: any): obj is ISort {

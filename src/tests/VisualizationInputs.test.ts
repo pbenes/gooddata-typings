@@ -1,4 +1,4 @@
-// (C) 2019 GoodData Corporation
+// (C) 2019-2020 GoodData Corporation
 import { VisualizationInput } from '../VisualizationInput';
 import IMeasure = VisualizationInput.IMeasure;
 import IMeasureDefinitionType = VisualizationInput.IMeasureDefinitionType;
@@ -498,6 +498,45 @@ describe('VisualizationObject', () => {
                 }
             };
             const result = VisualizationInput.isMeasureValueFilter(filter);
+            expect(result).toEqual(false);
+        });
+    });
+
+    describe('isRankingFilter', () => {
+        it('should return false when null is tested', () => {
+            const result = VisualizationInput.isRankingFilter(null);
+            expect(result).toEqual(false);
+        });
+
+        it('should return false when undefined is tested', () => {
+            const result = VisualizationInput.isRankingFilter(undefined);
+            expect(result).toEqual(false);
+        });
+
+        it('should return true when measure value filter is tested', () => {
+            const filter: VisualizationInput.IRankingFilter = {
+                rankingFilter: {
+                    measures: [{
+                        uri: '/gdc/mock/date'
+                    }],
+                    operator: 'TOP',
+                    value: 3
+                }
+            };
+            const result = VisualizationInput.isRankingFilter(filter);
+            expect(result).toEqual(true);
+        });
+
+        it('should return false when positive attribute filter is tested', () => {
+            const filter: VisualizationInput.IPositiveAttributeFilter = {
+                positiveAttributeFilter: {
+                    displayForm: {
+                        uri: '/gdc/mock/attribute'
+                    },
+                    in: ['/gdc/mock/attribute/value_1', '/gdc/mock/attribute/value_2']
+                }
+            };
+            const result = VisualizationInput.isRankingFilter(filter);
             expect(result).toEqual(false);
         });
     });

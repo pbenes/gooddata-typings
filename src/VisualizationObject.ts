@@ -12,7 +12,7 @@ export namespace VisualizationObject {
 
     export type BucketItem = IMeasure | IVisualizationAttribute;
 
-    export type VisualizationObjectExtendedFilter = VisualizationObjectFilter | IMeasureValueFilter;
+    export type VisualizationObjectExtendedFilter = VisualizationObjectFilter | IMeasureValueFilter | IRankingFilter;
     export type VisualizationObjectFilter = VisualizationObjectDateFilter | VisualizationObjectAttributeFilter;
 
     export type VisualizationObjectDateFilter =
@@ -98,6 +98,17 @@ export namespace VisualizationObject {
         measureValueFilter: {
             measure: IObjUriQualifier | ILocalIdentifierQualifier;
             condition?: MeasureValueFilterCondition;
+        };
+    }
+
+    export type RankingFilterOperator = 'TOP' | 'BOTTOM';
+
+    export interface IRankingFilter {
+        rankingFilter: {
+            measures: Array<IObjUriQualifier | ILocalIdentifierQualifier>;
+            attributes?: Array<IObjUriQualifier | ILocalIdentifierQualifier>;
+            operator: RankingFilterOperator;
+            value: number;
         };
     }
 
@@ -258,6 +269,13 @@ export namespace VisualizationObject {
     ): filter is IMeasureValueFilter {
         return !isEmpty(filter)
             && (filter as IMeasureValueFilter).measureValueFilter !== undefined;
+    }
+
+    export function isRankingFilter(
+        filter: VisualizationObjectExtendedFilter
+    ): filter is IRankingFilter {
+        return !isEmpty(filter)
+            && (filter as IRankingFilter).rankingFilter !== undefined;
     }
 
     export function isAbsoluteDateFilter(
